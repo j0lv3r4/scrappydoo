@@ -85,6 +85,18 @@ def uniquify(list_one, list_two):
     """
     return list(set(list_one) - set(list_two))
 
+def has_badword(text, badwords_file):
+    """Return `True` if a badword is in a phrase."""
+    # Create a list of words and remove ":" on the fly.
+    words = [x.replace(':', '') for x in text.split(' ')]
+
+    f = open(badwords_file, 'r')
+    lines = f.readlines()
+    f.close()
+
+    # Check if a *badword* is in the `words` list.
+    return True in map(lambda l: l.strip() in words, lines)
+
 def hashtag_word(text, keywords):
     """
     Compare words in the string with the `keywords.txt`
