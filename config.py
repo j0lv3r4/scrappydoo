@@ -1,7 +1,7 @@
 sleep_time = [2500, 3200]
 tweets_file = 'tweets.txt'
 log_path = 'log.txt'
-keywords = []
+keywords_file = 'keywords.txt'
 
 # Bit.ly API
 bitly_api_key = ''

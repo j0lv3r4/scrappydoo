@@ -48,7 +48,7 @@ def send_email(from_, to, subject, msg, key, sandbox):
     print 'Status: {0}'.format(r.status_code)
     print 'Body: {0}'.format(r.text)
 
-def short_link(long_url, token, api_url):
+def short_link(long_url):
     """
     Create a short link using the Bitly API from a
     given URL.
@@ -58,6 +58,8 @@ def short_link(long_url, token, api_url):
       token -- Bitly API token
       api_url -- Bitly API URL
     """
+    token = config.bitly_api_access_token
+    api_url = config.bitly_api_url
     query_args = urllib.urlencode({'access_token': token,
                                    'longUrl': long_url})
     query_url = '{0}?{1}'.format(api_url, query_args)
@@ -97,13 +99,15 @@ def has_badword(text, badwords_file):
     # Check if a *badword* is in the `words` list.
     return True in map(lambda l: l.strip() in words, lines)
 
-def hashtag_word(text, keywords):
+def hashtag_words(text):
     """
     Compare words in the string with the `keywords.txt`
     file and if it find one match, it will convert it to
     a hashtag.
     """
-    f = open(keywords, 'r')
+    text = text.split(' ')
+
+    f = open(config.keywords_file, 'r')
     keywords = f.readlines()
     f.close()
 
@@ -111,7 +115,8 @@ def hashtag_word(text, keywords):
         for keyword in keywords:
             if word.lower().strip() == keyword.lower().strip():
                 text[index] = '#' + str(keyword).strip()
-    return text
+
+    return (' ').join(text)
 
 def compose_tweet(long_text, url):
     """Return a string of 140 chars from a long text given
@@ -136,4 +141,4 @@ def compose_tweet(long_text, url):
     tweet = ((' ').join(letters)).strip('\r\n') + ' - ' + url
     logger.info('Composing tweet: ' + str(tweet.encode('utf-8')))
 
-    return tweet
+    return tweet.encode('utf-8')
