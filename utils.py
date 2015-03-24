@@ -26,7 +26,7 @@ handler.setFormatter(formatter)
 
 logger.addHandler(handler)
 
-def send_email(from_, to, subject, msg, key, sandbox):
+def send_email(from_, to, subject, msg):
     """
     Send an email using the mailgun API.
 
@@ -35,9 +35,10 @@ def send_email(from_, to, subject, msg, key, sandbox):
       to -- email that will receive the email
       subject -- email subject
       msg -- email msg
-      key -- mailgun api key
-      sandbox -- mailgun sandbox
     """
+    key = config.mailgun_key
+    sandbox = config.mailgun_sandbox
+
     req_url = 'https://api.mailgun.net/v2/{0}/messages'\
               .format(sandbox)
     data = {'from':from_, 'to':to, 'subject':subject,
