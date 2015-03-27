@@ -104,7 +104,7 @@ def hashtag_words(text):
     for index, word in enumerate(text):
         for keyword in keywords:
             if word.lower().strip() == keyword.lower().strip():
-                text[index] = '#' + str(keyword).strip()
+                text[index] = '#{0}'.format(str(keyword).strip())
 
     return (' ').join(text)
 
