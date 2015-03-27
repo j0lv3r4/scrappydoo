@@ -29,12 +29,6 @@ logger.addHandler(handler)
 def send_email(from_, to, subject, msg):
     """
     Send an email using the mailgun API.
-
-    Keyword arguments:
-      from -- email sending the email
-      to -- email that will receive the email
-      subject -- email subject
-      msg -- email msg
     """
     key = config.mailgun_key
     sandbox = config.mailgun_sandbox
@@ -53,11 +47,6 @@ def short_link(long_url):
     """
     Create a short link using the Bitly API from a
     given URL.
-
-    Keyword arguments:
-      long_url -- the URL that need to be shortened
-      token -- Bitly API token
-      api_url -- Bitly API URL
     """
     token = config.bitly_api_access_token
     api_url = config.bitly_api_url
@@ -122,14 +111,8 @@ def hashtag_words(text):
 def compose_tweet(long_text, url):
     """Return a string of 140 chars from a long text given
     creating a 'Tweet' with it.
-
-    Keyword arguments:
-      long_text -- Text that need to be short
-      url -- URL that need to go along with the tweet
     """
     letters = []
-
-    # Clean long_text from white-spaces
     long_text = long_text.split(' ')
 
     for line in long_text:
@@ -138,8 +121,10 @@ def compose_tweet(long_text, url):
         else:
             letters[-1] = '...'
             break
+    
+    short_text = ((' ').join(letters).encode('utf-8')).strip('\r\n')
+    tweet = '{0} - {1}'.format(short_text, url)
+    
+    logger.info('Composing tweet: {0}'.format(tweet))
 
-    tweet = ((' ').join(letters)).strip('\r\n') + ' - ' + url
-    logger.info('Composing tweet: ' + str(tweet.encode('utf-8')))
-
-    return tweet.encode('utf-8')
+    return tweet
